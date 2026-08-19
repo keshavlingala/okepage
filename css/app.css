@@ -87,6 +87,7 @@ button { font-family: inherit; color: inherit; }
 .brand { display: flex; align-items: baseline; gap: 10px; flex: none; white-space: nowrap; }
 .brand-mark { width: 11px; height: 11px; background: var(--color-accent); display: block; }
 .brand-name { font-size: 19px; letter-spacing: -0.02em; }
+.brand-tag { font-size: 13px; color: var(--color-neutral-700); }
 
 .langs {
   display: flex;

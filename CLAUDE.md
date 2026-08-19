@@ -4,7 +4,8 @@ Guidance for working in this repo.
 
 ## What this is
 
-A browser tool that lays several photos out on A4 sheets and prints them.
+**Okepage** (ఒకేపేజీ — "just one page") is a browser tool that lays several
+photos out on A4 sheets and prints them.
 Vanilla HTML/CSS/JS, **no framework, no build step, no dependencies, no
 server** — `index.html` is opened straight from disk. Keep it that way:
 

@@ -1,4 +1,6 @@
-# Photos on one page
+# Okepage
+
+*ఒకేపేజీ — photos on one page.*
 
 A single-page tool for printing many photos on one sheet of A4 — drop the
 photos in, pick how many fit on a page, print. Bilingual (తెలుగు / English),

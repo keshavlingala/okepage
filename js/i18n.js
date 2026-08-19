@@ -15,7 +15,8 @@ const I18N = (() => {
   const STRINGS = {
 
     te: {
-      brand: 'ఒకే పేజీలో ఫోటోలు',
+      brand: 'ఒకేపేజీ',
+      tagline: 'ఒకే పేజీలో ఫోటోలు',
       addPhotos: 'ఫోటోలు చేర్చండి',
       startOver: 'మళ్లీ మొదలు',
       print: 'ప్రింట్ చేయండి',
@@ -67,7 +68,8 @@ const I18N = (() => {
     },
 
     en: {
-      brand: 'Photos on one page',
+      brand: 'Okepage',
+      tagline: 'Photos on one page',
       addPhotos: 'Add photos',
       startOver: 'Start over',
       print: 'PRINT',

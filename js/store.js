@@ -9,7 +9,7 @@
 
 const Store = (() => {
 
-  const STORAGE_KEY = 'photo-grid-print/settings';
+  const STORAGE_KEY = 'okepage/settings';
   const PERSISTED = ['lang', 'orientation', 'preset', 'gap', 'margin', 'border'];
 
   const DEFAULTS = {
