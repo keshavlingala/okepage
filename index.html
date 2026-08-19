@@ -1,0 +1,172 @@
+<!doctype html>
+<html lang="te" data-orientation="portrait">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Photos on one page</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;800&family=Noto+Sans+Telugu:wght@400;600;700&display=swap">
+<link rel="stylesheet" href="css/app.css">
+<style id="page-rule">@page { size: A4 portrait; margin: 0; }</style>
+</head>
+<body>
+
+<div class="app">
+
+  <!-- ── Top bar ─────────────────────────────────────────────────────────── -->
+  <header class="topbar" data-print="ui">
+    <div class="brand">
+      <span class="brand-mark"></span>
+      <span class="brand-name heading" data-i18n="brand"></span>
+    </div>
+
+    <div class="langs" id="langs"></div>
+
+    <div class="spacer"></div>
+
+    <div class="counts">
+      <span class="counts-photos" id="count-photos"></span>
+      <span class="counts-paper" id="count-paper"></span>
+    </div>
+
+    <div class="actions">
+      <button type="button" class="action" id="btn-add">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M12 5v14M5 12h14"/></svg>
+        <span data-i18n="addPhotos"></span>
+      </button>
+      <button type="button" class="action action-quiet" id="btn-reset">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/></svg>
+        <span data-i18n="startOver"></span>
+      </button>
+      <button type="button" class="print-btn" id="btn-print">
+        <svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M6 9V3h12v6"/><path d="M6 18H4a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2h-2"/><path d="M6 14h12v7H6z"/></svg>
+        <span>
+          <span class="print-btn-label heading" data-i18n="print"></span>
+          <span class="print-btn-key">CTRL + P</span>
+        </span>
+      </button>
+    </div>
+  </header>
+
+  <div class="workspace">
+
+    <!-- ── Sidebar ───────────────────────────────────────────────────────── -->
+    <aside class="sidebar" data-print="ui">
+
+      <section class="section">
+        <div class="section-num">01</div>
+        <span class="section-title heading" data-i18n="orientationTitle"></span>
+        <div class="options" id="orientations"></div>
+        <p class="hint" data-i18n="orientationHint"></p>
+      </section>
+
+      <section class="section">
+        <div class="section-num">02</div>
+        <span class="section-title heading" data-i18n="perPageTitle"></span>
+        <div class="options" id="presets"></div>
+        <p class="hint" data-i18n="perPageHint"></p>
+      </section>
+
+      <section class="section">
+        <div class="section-num">03</div>
+        <span class="section-title heading" data-i18n="cuttingTitle"></span>
+
+        <div class="choices">
+          <button type="button" class="choice" id="btn-cover">
+            <span class="choice-title" data-i18n="fitCover"></span>
+            <span class="choice-note" data-i18n="fitCoverNote"></span>
+          </button>
+          <button type="button" class="choice" id="btn-contain">
+            <span class="choice-title" data-i18n="fitContain"></span>
+            <span class="choice-note" data-i18n="fitContainNote"></span>
+          </button>
+        </div>
+
+        <label class="slider">
+          <span class="slider-head">
+            <span class="slider-label" data-i18n="gap"></span>
+            <span class="slider-value" id="gap-value"></span>
+          </span>
+          <input type="range" id="gap" min="0" max="12" step="1">
+        </label>
+
+        <label class="slider">
+          <span class="slider-head">
+            <span class="slider-label" data-i18n="margin"></span>
+            <span class="slider-value" id="margin-value"></span>
+          </span>
+          <input type="range" id="margin" min="0" max="20" step="1">
+        </label>
+
+        <label class="slider">
+          <span class="slider-head">
+            <span class="slider-label" data-i18n="border"></span>
+            <span class="slider-value" id="border-value"></span>
+          </span>
+          <input type="range" id="border" min="0" max="5" step="1">
+        </label>
+      </section>
+
+      <section class="section">
+        <div class="section-num">04</div>
+        <span class="section-title heading" data-i18n="selectedTitle"></span>
+
+        <div id="selected">
+          <div class="sel-head">
+            <span class="sel-thumb"><img id="sel-thumb" alt=""></span>
+            <span class="sel-hint" data-i18n="selectedHint"></span>
+          </div>
+          <label class="slider">
+            <span class="slider-head">
+              <span class="slider-label" data-i18n="zoom"></span>
+              <span class="slider-value" id="zoom-value"></span>
+            </span>
+            <input type="range" id="zoom" min="100" max="300" step="5">
+          </label>
+          <div class="sel-actions">
+            <button type="button" class="link" id="btn-duplicate" data-i18n="duplicate"></button>
+            <button type="button" class="link" id="btn-fill-sheet" data-i18n="fillSheet"></button>
+            <button type="button" class="link link-danger" id="btn-remove" data-i18n="removePhoto"></button>
+          </div>
+        </div>
+
+        <p class="empty-note" id="no-selection" data-i18n="noSelection"></p>
+      </section>
+    </aside>
+
+    <!-- ── Stage ─────────────────────────────────────────────────────────── -->
+    <main class="stage" id="stage" data-print="main">
+
+      <div class="empty" id="empty" data-print="ui">
+        <span class="empty-title heading" data-i18n="emptyTitle"></span>
+        <p class="empty-body" data-i18n="emptyBody"></p>
+        <p class="empty-cta" data-i18n="emptyCta"></p>
+      </div>
+
+      <div class="fit" id="fit">
+        <div class="sheets" id="sheets"></div>
+      </div>
+
+      <div class="dropzone" id="dropzone" data-print="ui">
+        <span class="heading" data-i18n="dropNow"></span>
+      </div>
+    </main>
+  </div>
+
+  <!-- ── Footer ──────────────────────────────────────────────────────────── -->
+  <footer class="footer" data-print="ui">
+    <span id="print-settings"></span>
+    <span class="spacer"></span>
+    <span class="footer-saving" id="saving"></span>
+  </footer>
+
+  <input type="file" id="file-input" accept="image/*" multiple hidden>
+</div>
+
+<script src="js/i18n.js"></script>
+<script src="js/store.js"></script>
+<script src="js/layout.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
