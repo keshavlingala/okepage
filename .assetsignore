@@ -1,0 +1,15 @@
+# Everything in here stays out of the deployed Worker. The assets directory is
+# the repo root (there is no build step), so the repo's own files must be
+# excluded by hand.
+.assetsignore
+.git
+.github
+.gitignore
+wrangler.jsonc
+package.json
+package-lock.json
+node_modules
+CLAUDE.md
+README.md
+**/.DS_Store
+*.test.html

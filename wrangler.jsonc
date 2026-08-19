@@ -1,0 +1,16 @@
+{
+  "name": "okepage",
+  "compatibility_date": "2026-08-19",
+
+  // No build step and no Worker script — Okepage is plain HTML/CSS/JS served
+  // straight from the repo root. Files that are not part of the app are listed
+  // in .assetsignore so they never get uploaded.
+  "assets": {
+    "directory": ".",
+    "not_found_handling": "single-page-application"
+  },
+
+  "observability": {
+    "enabled": true
+  }
+}
