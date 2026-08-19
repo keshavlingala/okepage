@@ -64,7 +64,10 @@ const I18N = (() => {
       saving: (n, pages) =>
         n === 0 ? '' :
         n > 1 ? n + ' ఫోటోలకు ' + pages + ' పేజీ మాత్రమే — కాగితం ఆదా'
-              : 'ఒకే షీట్‌లో అన్నీ'
+              : 'ఒకే షీట్‌లో అన్నీ',
+
+      offlineReady: 'ఇంటర్నెట్ లేకున్నా పనిచేస్తుంది',
+      updateReady: 'కొత్త వెర్షన్ సిద్ధం — నొక్కి రీలోడ్ చేయండి'
     },
 
     en: {
@@ -117,7 +120,10 @@ const I18N = (() => {
       saving: (n, pages) =>
         n === 0 ? '' :
         n > 1 ? n + ' photos on ' + pages + (pages > 1 ? ' sheets' : ' sheet') + ' — paper saved'
-              : 'All on one sheet'
+              : 'All on one sheet',
+
+      offlineReady: 'Works without internet',
+      updateReady: 'New version ready — click to reload'
     }
   };
 

@@ -404,6 +404,30 @@ input[type="range"]::-moz-range-thumb { border: 0; width: 16px; height: 16px; ba
 .footer > span { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .footer-saving { color: var(--color-text); }
 
+/* Offline status, far right. Hidden until the service worker really has the
+   app cached — see renderChrome() in js/app.js. */
+.footer-offline { flex: none; color: var(--color-neutral-700); }
+.footer-offline::before {
+  content: "";
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  margin-inline-end: 6px;
+  background: var(--color-accent);
+}
+
+.footer-update {
+  flex: none;
+  border: 0;
+  padding: 3px 10px;
+  background: var(--color-accent);
+  color: #fff;
+  font-size: 12px;
+  white-space: nowrap;
+  cursor: pointer;
+}
+.footer-update:hover { background: var(--color-accent-700); }
+
 .is-hidden { display: none !important; }
 
 /* ── Print ───────────────────────────────────────────────────────────────── */

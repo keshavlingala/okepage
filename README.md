@@ -7,6 +7,7 @@ photos in, pick how many fit on a page, print. Bilingual (తెలుగు / E
 portrait or landscape.
 
 No build step, no dependencies, no server: **open `index.html` in a browser.**
+Installable as an app, and it keeps working with no internet at all.
 
 ## What it does
 
@@ -25,6 +26,20 @@ No build step, no dependencies, no server: **open `index.html` in a browser.**
 Photos never leave the machine — they are read straight from disk in the
 browser and are gone when the tab closes. Layout settings are remembered.
 
+## Install it / use it offline
+
+Visiting [okepage.keshav.codes](https://okepage.keshav.codes) once is enough:
+a service worker caches the whole app, so it opens and prints again with no
+network. Browsers offer an **Install** button in the address bar (or *Add to
+Home Screen* on a phone), which gives it its own icon and window.
+
+The footer says *"works without internet"* once the app really is cached, and
+offers a **new version — click to reload** button when an update is waiting;
+nothing reloads on its own, so it cannot interrupt a print.
+
+Opening `index.html` from a folder still works exactly as before — service
+workers do not exist on `file://`, so that path just skips all of this.
+
 ## Printing
 
 Press **Print** (or Ctrl/Cmd + P) and in the browser's print dialog set:
@@ -42,12 +57,19 @@ browsers get this right on their own.
 ## Project layout
 
 ```
-index.html      markup shell — every control has a stable id
-css/app.css     all styling, including the print rules
-js/i18n.js      Telugu + English strings
-js/store.js     state, photo operations, saved settings
-js/layout.js    grid + page geometry in millimetres (pure functions)
-js/app.js       renders the DOM and wires up the events
+index.html             markup shell — every control has a stable id
+css/app.css            all styling, including the print rules
+js/i18n.js             Telugu + English strings
+js/store.js            state, photo operations, saved settings
+js/layout.js           grid + page geometry in millimetres (pure functions)
+js/offline.js          registers the service worker, reports cached/update state
+js/app.js              renders the DOM and wires up the events
+sw.js                  precaches the app and serves it cache-first
+manifest.webmanifest   PWA metadata
+icons/                 app icons (SVG sources + rendered PNGs)
 ```
+
+Changing a cached file means bumping `VERSION` in `sw.js` — there is no build
+step to hash filenames for you.
 
 See `CLAUDE.md` for how the pieces fit together.

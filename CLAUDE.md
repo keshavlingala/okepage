@@ -7,14 +7,18 @@ Guidance for working in this repo.
 **Okepage** (ఒకేపేజీ — "just one page") is a browser tool that lays several
 photos out on A4 sheets and prints them.
 Vanilla HTML/CSS/JS, **no framework, no build step, no dependencies, no
-server** — `index.html` is opened straight from disk. Keep it that way:
+server** — `index.html` is opened straight from disk. It is also an
+installable PWA that works with no network at all. Keep it that way:
 
 - No npm packages, bundlers, transpilers or CSS frameworks.
 - **No ES modules** (`import`/`export`). Scripts load as plain `<script>` tags
-  in order and each one exposes a single global (`I18N`, `Store`, `Layout`).
+  in order and each one exposes a single global (`I18N`, `Store`, `Layout`,
+  `Offline`).
   ES modules would break `file://` usage, which is how people run this.
-- The only network request is the Google Fonts stylesheet, and the page still
-  works offline without it.
+- The only network request is the Google Fonts stylesheet; the service worker
+  caches it after the first visit, and the page still works without it.
+- The service worker is hand-written and hand-versioned. No Workbox, no
+  generated precache manifest — see *Offline* below.
 
 ## Files
 
@@ -25,7 +29,11 @@ server** — `index.html` is opened straight from disk. Keep it that way:
 | `js/i18n.js` | `I18N` — Telugu (`te`, default) and English (`en`) strings. |
 | `js/store.js` | `Store` — the state, the photo operations, localStorage persistence, subscribers. |
 | `js/layout.js` | `Layout` — pure geometry. No DOM access, so it is testable in plain node. |
+| `js/offline.js` | `Offline` — registers the service worker and reports whether the app is cached and whether an update is waiting. No DOM access. |
 | `js/app.js` | `render()` + event wiring. The only file that touches the DOM. |
+| `sw.js` | The service worker. Must sit at the root so its scope covers the whole app. |
+| `manifest.webmanifest` | PWA metadata — name, colours, icons, `display: standalone`. |
+| `icons/` | `icon.svg` and `icon-maskable.svg` are the sources; the PNGs are rendered from them (see *Offline* below). |
 
 ## How it fits together
 
@@ -42,6 +50,46 @@ Two deliberate exceptions, both for performance:
 - Dragging a photo's crop writes `objectPosition` straight onto the cached
   `<img>` and records it with `Store.updatePhotoQuietly()` — no re-render per
   pointer move.
+
+## Offline
+
+`sw.js` precaches every file in its `FILES` list on install and afterwards
+serves everything cache-first, refreshing each hit in the background. Google
+Fonts is cached lazily in a second cache, so a first visit that is already
+offline still works — it just falls back to system fonts.
+
+**There is no build step, so nothing hashes the filenames: bump `VERSION` in
+`sw.js` whenever you change a file it caches, and add new files to `FILES`.**
+Without a bump, browsers keep serving the old copy forever.
+
+Updates are never forced on a live page — a print job must not be interrupted
+by a reload. A new worker installs and then waits; `Offline` notices it, the
+footer offers "new version — click to reload", and only that click sends
+`skip-waiting` and reloads.
+
+`Offline.start()` no-ops on `file://`, where service workers do not exist, so
+the app still runs when opened straight from a folder — it just is not
+installable there.
+
+The icon PNGs are rendered from the two SVGs with headless Chrome; regenerate
+them if the artwork changes:
+
+```bash
+CHROME="/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
+render() {   # $1 svg, $2 size, $3 out.png
+  printf '<style>html,body{margin:0}img{display:block;width:%spx;height:%spx}</style><img src="file://%s/%s">' \
+    "$2" "$2" "$PWD" "$1" > /tmp/icon.html
+  "$CHROME" --headless --disable-gpu --hide-scrollbars --window-size=$2,$2 \
+    --screenshot="$3" file:///tmp/icon.html
+}
+render icons/icon.svg 512 icons/icon-512.png
+render icons/icon.svg 192 icons/icon-192.png
+render icons/icon.svg 180 icons/apple-touch-icon.png
+render icons/icon-maskable.svg 512 icons/icon-maskable-512.png
+```
+
+The maskable icon keeps the sheet inside the safe circle (80% of the canvas);
+the plain one lets it run larger.
 
 ## Geometry rules
 
@@ -91,7 +139,13 @@ CHROME="/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
   "file://$PWD/index.html"
 ```
 
-That only shows the empty state, since real photos need a file drop. To see a
+That only shows the empty state, since real photos need a file drop. Service
+workers need a real origin, so offline behaviour has to be checked over HTTP
+(`python3 -m http.server` in the repo root) rather than from `file://` — and
+remember that a stale worker will keep serving old files until `VERSION`
+changes.
+
+ To see a
 full sheet, copy `index.html` to a throwaway `preview.test.html`, append a
 script that seeds fake photos, and screenshot or print that instead:
 

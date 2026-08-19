@@ -41,6 +41,8 @@
     dropzone: $('dropzone'),
     printSettings: $('print-settings'),
     saving: $('saving'),
+    offlineReady: $('offline-ready'),
+    offlineUpdate: $('offline-update'),
     fileInput: $('file-input')
   };
 
@@ -253,6 +255,14 @@
     el.countPaper.textContent = count ? I18N.t('paperCount', pageCount) : '';
     el.printSettings.innerHTML = I18N.t('printSettings', I18N.t(state.orientation));
     el.saving.textContent = I18N.t('saving', count, pageCount);
+
+    /* Both stay hidden until the service worker has actually cached the app —
+       promising "works offline" before that is true would be a lie. */
+    const offline = Offline.status;
+    el.offlineReady.textContent = I18N.t('offlineReady');
+    el.offlineReady.classList.toggle('is-hidden', !offline.ready || offline.updateReady);
+    el.offlineUpdate.textContent = I18N.t('updateReady');
+    el.offlineUpdate.classList.toggle('is-hidden', !offline.updateReady);
   }
 
   /* ── Events ────────────────────────────────────────────────────────────── */
@@ -266,6 +276,7 @@
     };
 
     el.reset.onclick = () => Store.reset();
+    el.offlineUpdate.onclick = () => Offline.applyUpdate();
     el.print.onclick = () => {
       Store.set({ selectedId: null });
       setTimeout(() => window.print(), 60);
@@ -370,4 +381,5 @@
   bindEvents();
   Store.subscribe(render);
   render();
+  Offline.start(render);   // re-renders when the app becomes cached or updatable
 })();

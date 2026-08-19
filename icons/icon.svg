@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="Okepage">
+  <rect width="512" height="512" fill="#ec3013"/>
+  <g transform="translate(126,66)">
+    <rect width="260" height="380" fill="#f3f2f2"/>
+    <g fill="#201e1d">
+      <rect x="26" y="26" width="96" height="98"/>
+      <rect x="138" y="26" width="96" height="98"/>
+      <rect x="26" y="140" width="96" height="98"/>
+      <rect x="138" y="140" width="96" height="98"/>
+      <rect x="26" y="254" width="96" height="98"/>
+      <rect x="138" y="254" width="96" height="98"/>
+    </g>
+  </g>
+</svg>
