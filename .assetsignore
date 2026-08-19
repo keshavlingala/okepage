@@ -9,6 +9,7 @@ wrangler.jsonc
 package.json
 package-lock.json
 node_modules
+.wrangler
 CLAUDE.md
 README.md
 **/.DS_Store
